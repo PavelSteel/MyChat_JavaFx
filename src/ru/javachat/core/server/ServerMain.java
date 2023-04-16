@@ -1,4 +1,4 @@
-package sample;
+package ru.javachat.core.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -6,9 +6,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class TestServer {
+public class ServerMain {
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8189)) {
+        try  {
+            ServerSocket serverSocket = new ServerSocket(8189);
             System.out.println("Server started...Waiting clients");
             Socket socket = serverSocket.accept();
             System.out.println("Client connected");
@@ -20,6 +21,7 @@ public class TestServer {
                 out.println("echo: " + msg);
                 if (msg.equals("/end")) break;
             }
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
