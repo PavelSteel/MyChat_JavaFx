@@ -32,25 +32,31 @@ public class Controller implements Initializable {
             socket = new Socket(SERVER_IP, SERVER_PORT);
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
-            Thread t = new Thread(()->{
+            Thread t = new Thread(() -> {
                 try {
                     while (true) {
                         String s = null;
-
                         s = in.readUTF();
-
                         textArea.appendText(s + "\n");
                     }
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
+            t.setDaemon(true);
+            t.start();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    public void sendMsg(){
+    public void sendMsg() {
         try {
             out.writeUTF(msgField.getText());
             msgField.clear();
